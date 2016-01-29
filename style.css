@@ -53,10 +53,42 @@ body {
 	
 	
 #fullWrapper {
-    background-color: orange;
     position: absolute;
 }
 
 #imageContainer {
     overflow: hidden;
+}
+
+a {
+	color: inherit;
+}
+
+#imageContainer>img {
+	position: absolute;
+	left: -150%;
+}
+
+
+
+
+
+
+.bracketDiv {
+	background-size:100%;
+	position: absolute;
+	background-repeat: no-repeat;
+	z-index: 90;
+}
+
+#rightBracket {
+    background-image: url("photos/left-bracket.png");
+    min-width: 50px;
+    min-height: 100px;
+}
+
+#leftBracket {
+    background-image: url("photos/right-bracket.png");
+    min-width: 50px;
+    min-height: 100px;    
 }
