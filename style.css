@@ -93,3 +93,13 @@ a {
     min-width: 50px;
     min-height: 100px;    
 }
+
+
+
+
+
+#enterInputDiv{
+	color: white;
+	cursor: pointer;
+	font-size: 2.3vh;
+}

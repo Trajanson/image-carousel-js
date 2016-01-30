@@ -10,6 +10,11 @@
 <body>
     
     <div id='fullWrapper'>
+        <div id="enterInputDiv">
+            Insert New Picture
+        </div>
+
+
         
         <div id="imageContainer">
             <div class='bracketDiv' id='rightBracket'></div>
@@ -23,6 +28,20 @@
         
     </div>
     
+
+    <div id="dialog" title="Insert New Picture">
+      <p>This is the default dialog which is useful for displaying information. The dialog window can be moved, resized and closed with the 'x' icon.</p>
+      <form action="action_page.php">
+        Picure URL:&nbsp;&nbsp;
+        <input id="pictureURLInput" type="text" name="pictureURL" placeholder="http://www.google.com/image/apple-pie">
+        <br>
+        Designer's Name:&nbsp;&nbsp;
+        <input id="desgnerNameInput" type="text" name="designerName" placeholder="ex) Pablo Picasso..">
+        <br><br>
+        <input id="submitNewPictureButton" type="submit" value="Submit">
+      </form> 
+  
+    </div>
     
     
     

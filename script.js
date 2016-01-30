@@ -232,10 +232,8 @@ function determineImageSizeAndPosition (identity, imageEngineObj, pictureNumber)
 
   if (imageEngineObj.images.length >= 3 && isFirstTimeThrough) {
     isFirstTimeThrough = false;
-    imageEngineObj.positionCenterAndLeftAndRightPictures(1);
   }
 
-  // sizeAndPositionOnScreenImage  (image, imageEndHeight, imageEndWidth, imagePixelsFromLeft, imagePixelsFromTop);
 
   
 }
@@ -260,7 +258,9 @@ function sizeAndPositionOnScreenImage  (image, imageEndHeight, imageEndWidth, im
   }
 }
 
-function positionPreviousImage  (image, imageEndWidth, isAnimated) {
+function positionPreviousImage  (image, imageEndHeight, imageEndWidth, isAnimated) {
+  image.height(imageEndHeight);
+  image.width(imageEndWidth);  
   if (isAnimated) {
     image.animate({
       left: '100%'
@@ -273,8 +273,9 @@ function positionPreviousImage  (image, imageEndWidth, isAnimated) {
 
 }
 
-function positionNextImage  (image, imageEndWidth, isAnimated) {
-
+function positionNextImage  (image, imageEndHeight, imageEndWidth, isAnimated) {
+  image.height(imageEndHeight);
+  image.width(imageEndWidth);  
   if (isAnimated) {
     image.animate({
       left: '-200%'
@@ -308,7 +309,7 @@ function imageEngine () {
   this.generateNewImage = function (imageLocation, imageAuthor, sourceURL) {
     this.numberOfImages++;
     this.recordImageObject(imageLocation, imageAuthor, sourceURL);
-    this.placeImageIntoView(imageLocation);
+    this.placeImageIntoView(imageLocation, imageAuthor);
   };
   
   this.recordImageObject = function (imageLocation, imageAuthor, sourceURL) {
@@ -320,12 +321,15 @@ function imageEngine () {
     this.images.push(newObj);
   };  
   
-  this.placeImageIntoView = function (imageLocation) {
+  this.placeImageIntoView = function (imageLocation, imageAuthor) {
     var identity = this.numberOfImages - 1;
     var identityString = 'photo' + identity;
+    var tooltipText =  "Designer: " + imageAuthor;
     var self = this;
+    
+    console.log(tooltipText);
 
-    var elementToInsert = $(`<img id='` + identityString + `' src='` + imageLocation +  `'></img>`);
+    var elementToInsert = $(`<img title='` + tooltipText + `' id='` + identityString + `' src='` + imageLocation +  `'></img>`);
     $(elementToInsert).appendTo('#imageContainer');
 
     $(elementToInsert).load(function () {
@@ -356,7 +360,6 @@ function imageEngine () {
       nextPicNumber = 0;            
     }
     
-    console.log(motion);
     switch (motion) {
       case 'standard':
         isPrevPicAnimated = true;
@@ -398,6 +401,7 @@ function imageEngine () {
 
         positionPreviousImage (
           $(prevPicID),
+         this.images[centerPicNumber]['imageHeight'],
          this.images[centerPicNumber]['imageWidth'],
          isPrevPicAnimated
         );
@@ -413,6 +417,7 @@ function imageEngine () {
         
         positionNextImage (
           $(nextPicID),
+         this.images[centerPicNumber]['imageHeight'],
          this.images[centerPicNumber]['imageWidth'],
          isNextPicAnimated
         );        
@@ -479,8 +484,70 @@ function engageImageEngine () {
         window.setTimeout(function() {isANeedToSlowDown = false;}, TIME_TO_PREVENT_FURTHER_ACTIONS_ON_IMAGE_CAROUSEL);
       }      
     });
+    
+    
+    
+    
+  // New Picture Function  
+  $('#enterInputDiv').hover(function () {
+    $(this).css({color: '#FDD3D3'});
+  }, function () {
+    $(this).css({color: 'white'});
+  });
+  
+  $('#enterInputDiv').click(function () {
+    
+    $(function() {
+      $( "#dialog" ).dialog("open");
+      $('#submitNewPictureButton').click(function (event) {
+        event.preventDefault();
+        
+        var newPictureURL = $('#pictureURLInput').val(),
+            newPictureDesignerName = $('#desgnerNameInput').val(),
+            imageLocation = firstImageEngine.images.length - 1,
+            imageID = '#image' + imageLocation; 
+
+      firstImageEngine.generateNewImage( newPictureURL , newPictureDesignerName, newPictureURL);
+
+       
+       $('#pictureURLInput').val('');
+       $('#desgnerNameInput').val('');
+       $( "#dialog" ).dialog( "close" );
+       
+      });
+    });
+  });    
+
+
+  $('#photo3').load(function () {
+        firstImageEngine.positionCenterAndLeftAndRightPictures(1);
+  })    
+
   
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 function moveForwardThroughCarousel (imageEngineObj, movement) {
   var motion;
@@ -511,6 +578,12 @@ function moveForwardThroughCarousel (imageEngineObj, movement) {
 
 
 $(document).ready( function () {
+  
+  // Initialize
+  $( "#dialog" ).dialog({ autoOpen: false });
+  
+  
+  
   sizeElements();
 
   $(window).resize( function () {
@@ -520,6 +593,8 @@ $(document).ready( function () {
   
   // Start Image Processor
   engageImageEngine ();
+
+  
   
   $('#imageContainer').hover(
     function (event) {
@@ -527,7 +602,24 @@ $(document).ready( function () {
     }, function () {
       $('.bracketDiv').hide();      
     }
-    )
+  );
+
+
+
+  $( document ).tooltip();
+
+
+
+
+
+
+
+
+
+
+
+
 
   
 });
+
