@@ -53,7 +53,7 @@ const PERCENT_LEFT_OR_RIGHT_OF_IMAGE_CONTAINER_FOR_BRACKET = 0;
 const TRANSITION_LENGTH = 1000;
 
 // SAFETY DELAY TIMER 
-const TIME_TO_PREVENT_FURTHER_ACTIONS_ON_IMAGE_CAROUSEL = 1500;
+const TIME_TO_PREVENT_FURTHER_ACTIONS_ON_IMAGE_CAROUSEL = 1250;
 
 ////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////
@@ -511,17 +511,23 @@ function moveForwardThroughCarousel (imageEngineObj, movement) {
 
 
 $(document).ready( function () {
+  sizeElements();
+
+  $(window).resize( function () {
     sizeElements();
-
-    $(window).resize( function () {
-      sizeElements();
-      determineImageSizeAndPosition();
-    });
-    
-    // Start Image Processor
-    engageImageEngine ();
-    
-
+    determineImageSizeAndPosition();
+  });
+  
+  // Start Image Processor
+  engageImageEngine ();
+  
+  $('#imageContainer').hover(
+    function (event) {
+      $('.bracketDiv').fadeIn(1000);
+    }, function () {
+      $('.bracketDiv').hide();      
+    }
+    )
 
   
 });

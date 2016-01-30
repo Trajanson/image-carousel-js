@@ -79,6 +79,7 @@ a {
 	position: absolute;
 	background-repeat: no-repeat;
 	z-index: 90;
+	display: none;
 }
 
 #rightBracket {
